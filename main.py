@@ -19,6 +19,6 @@ soup = BeautifulSoup(html_content, "html.parser")
 price_element = soup.select_one("ul.price li.price-current strong")
 if price_element:
     price = price_element.get_text(strip=True)
-    print("Price: $" + price)
+    print(price)
 else:
     print("Price not found")
