@@ -25,15 +25,6 @@ pipeline {
             echo scriptOutput
             // Save scriptoutput to a variable to be used in the next stage
             env.SCRIPT_OUTPUT = scriptOutput
-
-            // Convert the string to an integer if it's an integer-like value
-            try {
-                env.SCRIPT_OUTPUT = scriptOutput.toInteger()
-            } catch (NumberFormatException e) {
-                echo "Error converting scriptOutput to integer: ${e.message}"
-                currentBuild.result = 'FAILURE'
-                error("Script output is not a valid integer.")
-            }
           }
         }
       }
@@ -41,7 +32,8 @@ pipeline {
         steps {
           echo 'Script output: ' + env.SCRIPT_OUTPUT
           script {
-            if (env.SCRIPT_OUTPUT < 1000) {
+            def price = env.SCRIPT_OUTPUT.toInteger()
+            if (price < 1000) {
             echo 'Sending email'
 
             mail(
