@@ -31,27 +31,26 @@ pipeline {
       stage('Send Email') {
         steps {
           echo 'Script output: ' + env.SCRIPT_OUTPUT
+          echo 'DEFAULT_REPLYTO: ' + env.DEFAULT_REPLYTO
+          echo 'DEFAULT_RECIPIENTS: ' + env.DEFAULT_RECIPIENTS
           script {
             def price = env.SCRIPT_OUTPUT.toInteger()
             if (price < 1000) {
-            echo 'Sending email'
-            sendEmail()
+              echo 'Sending email'
+              // Send email notification
+              // emailext (
+              //   subject: "Price dropped to ${price}",
+              //   body: "Price dropped to ${price}",
+              //   to: "",
+              //   replyTo: "",
+              //   mimeType: 'text/html',
+              //   attachLog: true,
+              // )
             } else {
-            echo 'Email notification not triggered'
+              echo 'Email notification not triggered'
             }
           }
         }
       }
     }
-}
-
-def sendEmail() {
-    def buildStatus = currentBuild.currentResult
-    emailext (
-        to: ${DEFAULT_RECIPIENTS},
-        from: ${DEFAULT_REPLYTO},
-        subject: "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-        body: "Build Status: ${buildStatus}",
-        attachLog: true,
-    )
 }
