@@ -24,11 +24,12 @@ pipeline {
             def scriptOutput = sh(script: 'python3 main.py', returnStdout: true).trim()
             echo scriptOutput
             // Save scriptoutput to a variable to be used in the next stage
-            env.SCRIPT_OUTPUT = scriptOutput.toInteger()
+            env.SCRIPT_OUTPUT = scriptOutput
           }
         }
       }
       stage('Send Email') {
+        echo 'Script output: ' + env.SCRIPT_OUTPUT
         steps {
           script {
             if (env.SCRIPT_OUTPUT < 1000) {
