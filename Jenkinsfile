@@ -29,8 +29,8 @@ pipeline {
         }
       }
       stage('Send Email') {
-        echo 'Script output: ' + env.SCRIPT_OUTPUT
         steps {
+          echo 'Script output: ' + env.SCRIPT_OUTPUT
           script {
             if (env.SCRIPT_OUTPUT < 1000) {
             echo 'Sending email'
