@@ -35,13 +35,7 @@ pipeline {
             def price = env.SCRIPT_OUTPUT.toInteger()
             if (price < 1000) {
             echo 'Sending email'
-
-            mail(
-                from: ${DEFAULT_REPLYTO},
-                to: ${DEFAULT_RECIPEINTS_LIST},
-                subject: ${DEFAULT_SUBJECT},
-                body: ${DEFAULT_BODY}
-              )
+            sendEmail()
             } else {
             echo 'Email notification not triggered'
             }
@@ -49,4 +43,15 @@ pipeline {
         }
       }
     }
+}
+
+def sendEmail() {
+    def buildStatus = currentBuild.currentResult
+    emailext (
+        to: ${DEFAULT_RECIPEINTS_LIST},
+        from: ${DEFAULT_REPLYTO},
+        subject: "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+        body: "Build Status: ${buildStatus}",
+        attachLog: true,
+    )
 }
