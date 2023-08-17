@@ -37,10 +37,10 @@ pipeline {
             echo 'Sending email'
 
             mail(
-                from: $DEFAULT_REPLYTO,
-                to: $DEFAULT_RECIPEINTS_LIST,
-                subject: $DEFAULT_SUBJECT,
-                body: $DEFAULT_BODY
+                from: ${DEFAULT_REPLYTO},
+                to: ${DEFAULT_RECIPEINTS_LIST},
+                subject: ${DEFAULT_SUBJECT},
+                body: ${DEFAULT_BODY}
               )
             } else {
             echo 'Email notification not triggered'
