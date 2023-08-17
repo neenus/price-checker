@@ -4,10 +4,6 @@ pipeline {
         image 'python:3.8-buster'
       }
     }
-    triggers {
-      TZ='America/Toronto'
-      cron('H */6 * * *') // Run every six hours
-    }
 
     stages {
       stage('Version') {
