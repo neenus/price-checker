@@ -48,7 +48,7 @@ pipeline {
 def sendEmail() {
     def buildStatus = currentBuild.currentResult
     emailext (
-        to: ${DEFAULT_RECIPIENTS_LIST},
+        to: ${DEFAULT_RECIPIENTS},
         from: ${DEFAULT_REPLYTO},
         subject: "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
         body: "Build Status: ${buildStatus}",
