@@ -18,12 +18,12 @@ pipeline {
         }
       }
       stage('Run Script') {
-        steps {
           // Run the script and return the printed output
-          scriptOutput = sh(script: 'python3 script.py', returnStdout: true)
-          echo scriptOutput
+        steps {
+            scriptOutput = sh(script: 'python3 main.py', returnStdout: true)
+            echo scriptOutput
           // Save scriptoutput to a variable to be used in the next stage
-          env.SCRIPT_OUTPUT = scriptOutput.toInteger()
+            env.SCRIPT_OUTPUT = scriptOutput.toInteger()
         }
       }
       stage('Send Email') {
