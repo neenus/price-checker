@@ -26,7 +26,7 @@ pipeline {
         steps {
           script {
             def scriptOutput = sh(script: 'python3 main.py', returnStdout: true).trim()
-            echo scriptOutput
+            echo "Price is: " + scriptOutput
             // Save scriptoutput to a variable to be used in the next stage
             env.SCRIPT_OUTPUT = scriptOutput
           }
@@ -36,14 +36,14 @@ pipeline {
         steps {
           script {
             def price = env.SCRIPT_OUTPUT.toInteger()
-            if (price < 1000) {
+            if (price < 750) {
               echo 'Sending email'
               // Send email notification
               emailext (
-                subject: "Price dropped to ${price}",
+                subject: "Jenkins - newegg price drop notification",
                 body: "Price dropped to ${price}",
-                to: "${env.RECIPIENT_EMAIL}",
-                replyTo: "${env.REPLYTO_EMAIL}",
+                to: env.RECIPIENT_EMAIL,
+                replyTo: env.REPLYTO_EMAIL,
                 mimeType: 'text/html',
                 attachLog: true
               )
