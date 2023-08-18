@@ -4,6 +4,10 @@ pipeline {
         image 'python:3.8-buster'
       }
     }
+    environment {
+      REPLYTO_EMAIL=credentials('DEFAULT_REPLYTO_EMAIL')
+      RECIPIENT_EMAIL=credentials('DEFAULT_RECIPIENT_EMAIL')
+    }
 
     stages {
       stage('Version') {
@@ -30,22 +34,19 @@ pipeline {
       }
       stage('Send Email') {
         steps {
-          echo 'Script output: ' + env.SCRIPT_OUTPUT
-          echo 'DEFAULT_REPLYTO: ' + env.DEFAULT_REPLYTO
-          echo 'DEFAULT_RECIPIENTS: ' + env.DEFAULT_RECIPIENTS
           script {
             def price = env.SCRIPT_OUTPUT.toInteger()
             if (price < 1000) {
               echo 'Sending email'
               // Send email notification
-              // emailext (
-              //   subject: "Price dropped to ${price}",
-              //   body: "Price dropped to ${price}",
-              //   to: "",
-              //   replyTo: "",
-              //   mimeType: 'text/html',
-              //   attachLog: true,
-              // )
+              emailext (
+                subject: "Price dropped to ${price}",
+                body: "Price dropped to ${price}",
+                to: "${env.RECIPIENT_EMAIL}",
+                replyTo: "${env.REPLYTO_EMAIL}",
+                mimeType: 'text/html',
+                attachLog: true
+              )
             } else {
               echo 'Email notification not triggered'
             }
