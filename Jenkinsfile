@@ -4,6 +4,10 @@ pipeline {
         image 'python:3.8-buster'
       }
     }
+    triggers {
+      cron '''TZ=America/Toronto
+      H H/6 * * *'''
+    }
     environment {
       REPLYTO_EMAIL=credentials('DEFAULT_REPLYTO_EMAIL')
       RECIPIENT_EMAIL=credentials('DEFAULT_RECIPIENT_EMAIL')
